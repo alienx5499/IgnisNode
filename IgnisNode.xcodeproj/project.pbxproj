@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		49FE199D2F8082D500E19288 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = 49FE199C2F8082D500E19288 /* LDKNode */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		49FE19282F807AAF00E19288 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49FE199D2F8082D500E19288 /* LDKNode in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = IgnisNode;
 			packageProductDependencies = (
+				49FE199C2F8082D500E19288 /* LDKNode */,
 			);
 			productName = IgnisNode;
 			productReference = 49FE191A2F807AAD00E19288 /* IgnisNode.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 49FE19112F807AAD00E19288;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				49FE199B2F8082D500E19288 /* XCRemoteSwiftPackageReference "ldk-node" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 49FE191B2F807AAD00E19288 /* Products */;
 			projectDirPath = "";
@@ -578,6 +587,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		49FE199B2F8082D500E19288 /* XCRemoteSwiftPackageReference "ldk-node" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lightningdevkit/ldk-node.git";
+			requirement = {
+				kind = exactVersion;
+				version = 0.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		49FE199C2F8082D500E19288 /* LDKNode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 49FE199B2F8082D500E19288 /* XCRemoteSwiftPackageReference "ldk-node" */;
+			productName = LDKNode;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 49FE19122F807AAD00E19288 /* Project object */;
 }
