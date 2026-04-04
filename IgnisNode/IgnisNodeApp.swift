@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct IgnisNodeApp: App {
+    @State private var bootstrap = IgnisNodeBootstrap()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(bootstrap: bootstrap)
         }
     }
 }
