@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @Bindable var bootstrap: IgnisNodeBootstrap
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -32,6 +33,11 @@ struct ContentView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .task {
             await bootstrap.start()
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .background {
+                bootstrap.stop()
+            }
         }
     }
 }

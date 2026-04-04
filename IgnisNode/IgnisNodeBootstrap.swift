@@ -28,7 +28,10 @@ final class IgnisNodeBootstrap {
         lastError = nil
         status = "Preparing storage…"
         do {
-            let storagePath = try IgnisNodeStorage.dataDirectoryURL(network: IgnisNodeDefaults.network).path
+            let dataURL = try IgnisNodeStorage.dataDirectoryURL(network: IgnisNodeDefaults.network)
+            let storagePath = dataURL.path
+            let seedPhrasePath = dataURL.appendingPathComponent("seed_phrase")
+            let keySeedPath = dataURL.appendingPathComponent("keys_seed")
 
             status = "Configuring node…"
             var config = defaultConfig()
@@ -47,8 +50,20 @@ final class IgnisNodeBootstrap {
             builder.setChainSourceEsplora(serverUrl: IgnisNodeDefaults.esploraURL, config: syncConfig)
             builder.setGossipSourceRgs(rgsServerUrl: IgnisNodeDefaults.rgsURL)
 
-            let mnemonic = generateEntropyMnemonic(wordCount: nil)
-            builder.setEntropyBip39Mnemonic(mnemonic: mnemonic, passphrase: nil)
+            let words: String
+            if let saved = try? String(contentsOfFile: seedPhrasePath.path, encoding: .utf8),
+               !saved.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            {
+                words = saved.trimmingCharacters(in: .whitespacesAndNewlines)
+            } else if !FileManager.default.fileExists(atPath: keySeedPath.path) {
+                words = generateEntropyMnemonic(wordCount: nil)
+                try words.write(toFile: seedPhrasePath.path, atomically: true, encoding: .utf8)
+            } else {
+                words = ""
+            }
+            if !words.isEmpty {
+                builder.setEntropyBip39Mnemonic(mnemonic: words, passphrase: nil)
+            }
 
             status = "Starting…"
             let built = try builder.build()
