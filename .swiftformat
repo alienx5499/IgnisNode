@@ -1,0 +1,4 @@
+# https://github.com/nicklockwood/SwiftFormat
+# Keeps CI `swiftformat … --lint` aligned with the toolchain.
+
+--swiftversion 5.0
