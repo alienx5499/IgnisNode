@@ -46,6 +46,7 @@ struct ContentView: View {
                             .font(.system(size: 10, weight: .semibold))
                             .tracking(3)
                             .foregroundStyle(theme.appName)
+                            .accessibilityIdentifier("ignis.home.brandTitle")
                         Spacer(minLength: 8)
                         Button {
                             showLogConsole = true
@@ -56,6 +57,7 @@ struct ContentView: View {
                         }
                         .buttonStyle(.glass)
                         .accessibilityLabel(String(localized: "Node log console"))
+                        .accessibilityIdentifier("ignis.home.logConsole")
                         Text("₿")
                             .font(.system(size: 18))
                             .foregroundStyle(theme.btcGlyph)
@@ -69,6 +71,7 @@ struct ContentView: View {
                         .tracking(3)
                         .foregroundStyle(theme.sectionLabel)
                         .padding(.bottom, 5)
+                        .accessibilityIdentifier("ignis.home.statusHeading")
 
                     HStack(spacing: 7) {
                         StatusPulseDot(theme: theme, phase: bootstrap.phase)
@@ -94,6 +97,7 @@ struct ContentView: View {
                         .tracking(3)
                         .foregroundStyle(theme.sectionLabel)
                         .padding(.bottom, 5)
+                        .accessibilityIdentifier("ignis.home.nodeIdHeading")
 
                     GlassEffectContainer(spacing: 12) {
                         VStack(alignment: .leading, spacing: 10) {
@@ -115,6 +119,7 @@ struct ContentView: View {
                                     accessibilityAnnouncement: String(localized: "Copied to clipboard"),
                                     theme: theme
                                 )
+                                .accessibilityIdentifier("ignis.home.copyNodeId")
                                 Button {
                                     showNodeIdQR = true
                                 } label: {
@@ -123,6 +128,7 @@ struct ContentView: View {
                                         .foregroundStyle(theme.copyLabel)
                                 }
                                 .buttonStyle(.glass)
+                                .accessibilityIdentifier("ignis.home.showNodeIdQR")
                             }
                         }
                     }
@@ -158,6 +164,7 @@ struct ContentView: View {
             }
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize, axes: .vertical)
+            .accessibilityIdentifier("ignis.home.scroll")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .refreshable {
                 await bootstrap.refreshFromPull()

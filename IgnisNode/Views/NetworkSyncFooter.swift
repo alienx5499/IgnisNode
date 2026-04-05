@@ -21,18 +21,12 @@ struct NetworkSyncFooter: View {
         let signetTitle = String(localized: "Signet")
         let esploraTitle = String(localized: "Esplora")
         let rgsTitle = String(localized: "RGS")
-        let combinedAccessibilityLabel = String(
-            format: String(localized: "Network %@, chain %@, gossip %@"),
-            locale: .current,
-            signetTitle,
-            esploraTitle,
-            rgsTitle
-        )
         return VStack(alignment: .trailing, spacing: 6) {
             Text(String(localized: "Network & sync"))
                 .font(.system(size: 8, weight: .medium))
                 .tracking(1)
                 .foregroundStyle(theme.sectionLabel)
+                .accessibilityLabel(String(localized: "Network & sync"))
             GlassEffectContainer(spacing: 5) {
                 HStack(spacing: 5) {
                     networkBadge(title: signetTitle, style: .signet)
@@ -40,8 +34,8 @@ struct NetworkSyncFooter: View {
                     networkBadge(title: rgsTitle, style: .neutral)
                 }
                 .allowsHitTesting(false)
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel(combinedAccessibilityLabel)
+                // `.combine` would collapse children and hide per-badge identifiers (e.g. for XCUI).
+                .accessibilityElement(children: .contain)
             }
         }
         .frame(maxWidth: .infinity, alignment: .trailing)
@@ -60,6 +54,7 @@ struct NetworkSyncFooter: View {
                 .padding(.vertical, 3)
                 .foregroundStyle(theme.signetBadgeText)
                 .glassEffect(in: .capsule)
+                .accessibilityIdentifier("ignis.networkFooter.signetBadge")
         case .neutral:
             Text(title)
                 .font(.system(size: theme.badgeFontSize, weight: .medium))

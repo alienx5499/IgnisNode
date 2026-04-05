@@ -8,6 +8,7 @@
 //
 
 import Darwin
+import Foundation
 import LDKNode
 import XCTest
 
@@ -48,7 +49,13 @@ private enum TestEphemeralPort {
 }
 
 final class TwoNodeConnectionTests: XCTestCase {
-    func testTwoSignetNodesConnectOverLoopback() async throws {
+    override func setUp() {
+        super.setUp()
+        // Esplora + LDK startup can exceed default allowances on slow CI; avoid runner exit 15 (SIGTERM).
+        executionTimeAllowance = 600
+    }
+
+    func testTwoSignetNodesConnectOverLoopback() throws {
         let base = FileManager.default.temporaryDirectory
             .appendingPathComponent("IgnisNode-2node-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: base, withIntermediateDirectories: true)
@@ -80,7 +87,7 @@ final class TwoNodeConnectionTests: XCTestCase {
                 connected = true
                 break
             }
-            try await Task.sleep(nanoseconds: 250_000_000)
+            Thread.sleep(forTimeInterval: 0.25)
         }
 
         XCTAssertTrue(
@@ -120,28 +127,73 @@ final class TwoNodeConnectionTests: XCTestCase {
         )
     }
 
+    /// Signet Esplora bases (no trailing slash). `start()` needs a live HTTP Esplora; Blockstream can rate-limit or time out.
+    private static let signetEsploraBaseURLs: [String] = [
+        "https://blockstream.info/signet/api",
+        "https://mempool.space/signet/api",
+    ]
+
+    private static let startRetryCount = 3
+    private static let startRetryDelaySeconds: TimeInterval = 2.5
+
+    private static func normalizedEsploraBaseURL(_ raw: String) -> String {
+        var s = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        while s.last == "/" {
+            s.removeLast()
+        }
+        return s
+    }
+
     private static func makeStartedNode(storage: URL, listenPort: Int) throws -> Node {
-        var config = defaultConfig()
-        config.storageDirPath = storage.path
-        config.network = .signet
-        config.listeningAddresses = ["127.0.0.1:\(listenPort)"]
+        var lastError: Error?
+        for esploraRaw in signetEsploraBaseURLs {
+            let esploraURL = normalizedEsploraBaseURL(esploraRaw)
+            if FileManager.default.fileExists(atPath: storage.path) {
+                try FileManager.default.removeItem(at: storage)
+            }
+            try FileManager.default.createDirectory(at: storage, withIntermediateDirectories: true)
 
-        let builder = Builder.fromConfig(config: config)
-        let syncConfig = EsploraSyncConfig(
-            backgroundSyncConfig: BackgroundSyncConfig(
-                onchainWalletSyncIntervalSecs: 120,
-                lightningWalletSyncIntervalSecs: 60,
-                feeRateCacheUpdateIntervalSecs: 1200
-            )
+            do {
+                var config = defaultConfig()
+                config.storageDirPath = storage.path
+                config.network = .signet
+                config.listeningAddresses = ["127.0.0.1:\(listenPort)"]
+
+                let builder = Builder.fromConfig(config: config)
+                let syncConfig = EsploraSyncConfig(
+                    backgroundSyncConfig: BackgroundSyncConfig(
+                        onchainWalletSyncIntervalSecs: 120,
+                        lightningWalletSyncIntervalSecs: 60,
+                        feeRateCacheUpdateIntervalSecs: 1200
+                    )
+                )
+                builder.setChainSourceEsplora(serverUrl: esploraURL, config: syncConfig)
+                builder.setGossipSourceRgs(rgsServerUrl: "https://rgs.mutinynet.com/snapshot")
+
+                let words = generateEntropyMnemonic(wordCount: nil)
+                builder.setEntropyBip39Mnemonic(mnemonic: words, passphrase: nil)
+
+                let node = try builder.build()
+                for attempt in 1 ... startRetryCount {
+                    do {
+                        try node.start()
+                        return node
+                    } catch {
+                        lastError = error
+                        try? node.stop()
+                        if attempt < startRetryCount {
+                            Thread.sleep(forTimeInterval: startRetryDelaySeconds)
+                        }
+                    }
+                }
+            } catch {
+                lastError = error
+            }
+        }
+        throw lastError ?? NSError(
+            domain: "TwoNodeConnectionTests",
+            code: 5,
+            userInfo: [NSLocalizedDescriptionKey: "Could not start node with any Signet Esplora base URL."]
         )
-        builder.setChainSourceEsplora(serverUrl: "https://blockstream.info/signet/api", config: syncConfig)
-        builder.setGossipSourceRgs(rgsServerUrl: "https://rgs.mutinynet.com/snapshot")
-
-        let words = generateEntropyMnemonic(wordCount: nil)
-        builder.setEntropyBip39Mnemonic(mnemonic: words, passphrase: nil)
-
-        let node = try builder.build()
-        try node.start()
-        return node
     }
 }
