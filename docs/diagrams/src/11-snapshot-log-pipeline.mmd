@@ -1,0 +1,24 @@
+---
+config:
+  theme: base
+  themeVariables:
+    darkMode: false
+    background: "#ffffff"
+    lineColor: "#111827"
+    signalColor: "#111827"
+    signalTextColor: "#374151"
+    primaryTextColor: "#111827"
+    secondaryTextColor: "#374151"
+    tertiaryColor: "#6b7280"
+    arrowheadColor: "#111827"
+    edgeLabelBackground: "#f3f4f6"
+---
+flowchart LR
+  NB[NodeBootstrap] -->|timer| S["refreshSnapshot"]
+  NB -->|file| L["Log polling"]
+  S --> UI["Observable UI state"]
+
+  style NB fill:#86efac,stroke:#15803d,stroke-width:2px,color:#14532d
+  style S fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style L fill:#fde68a,stroke:#ca8a04,stroke-width:2px,color:#a16207
+  style UI fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1

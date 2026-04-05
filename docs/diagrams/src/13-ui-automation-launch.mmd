@@ -1,0 +1,22 @@
+---
+config:
+  theme: base
+  themeVariables:
+    darkMode: false
+    background: "#ffffff"
+    lineColor: "#111827"
+    signalColor: "#111827"
+    signalTextColor: "#374151"
+    primaryTextColor: "#111827"
+    secondaryTextColor: "#374151"
+    tertiaryColor: "#6b7280"
+    arrowheadColor: "#111827"
+    edgeLabelBackground: "#f3f4f6"
+---
+flowchart LR
+  UIT[UITest bundle] -->|launch args| APPN["Application"]
+  APPN -->|arguments| NB2["NodeBootstrap"]
+
+  style UIT fill:#fce7f3,stroke:#ec4899,stroke-width:2px,color:#be185d
+  style APPN fill:#ffffff,stroke:#2563eb,stroke-width:2px,color:#1d4ed8
+  style NB2 fill:#86efac,stroke:#15803d,stroke-width:2px,color:#14532d

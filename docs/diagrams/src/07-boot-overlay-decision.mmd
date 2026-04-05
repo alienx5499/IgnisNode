@@ -1,0 +1,26 @@
+---
+config:
+  theme: base
+  themeVariables:
+    darkMode: false
+    background: "#ffffff"
+    lineColor: "#111827"
+    signalColor: "#111827"
+    signalTextColor: "#374151"
+    primaryTextColor: "#111827"
+    secondaryTextColor: "#374151"
+    tertiaryColor: "#6b7280"
+    arrowheadColor: "#111827"
+    edgeLabelBackground: "#f3f4f6"
+---
+flowchart TD
+  Q{"UI-testing launch argument?"}
+  Q -->|present| OFF["Overlay suppressed"]
+  Q -->|absent| SYNC{"Sync or timeout satisfied?"}
+  SYNC -->|yes| OFF2["Overlay hidden"]
+  SYNC -->|no| ON["Overlay visible"]
+
+  style Q fill:#fde68a,stroke:#d97706,stroke-width:2px,color:#92400e
+  style OFF fill:#86efac,stroke:#15803d,stroke-width:2px,color:#14532d
+  style OFF2 fill:#86efac,stroke:#15803d,stroke-width:2px,color:#14532d
+  style ON fill:#fdba74,stroke:#ea580c,stroke-width:2px,color:#9a3412

@@ -1,0 +1,41 @@
+---
+config:
+  theme: base
+  themeVariables:
+    darkMode: false
+    background: "#ffffff"
+    lineColor: "#111827"
+    signalColor: "#111827"
+    signalTextColor: "#374151"
+    primaryTextColor: "#111827"
+    secondaryTextColor: "#374151"
+    tertiaryColor: "#6b7280"
+    arrowheadColor: "#111827"
+    edgeLabelBackground: "#f3f4f6"
+---
+flowchart LR
+  subgraph SwiftUILayer["SwiftUI"]
+    ContentView
+    NetworkSyncFooter
+    BootLoadingOverlay
+  end
+
+  subgraph Domain["Node domain"]
+    NodeBootstrap
+    NodeStorage
+    Parsers["Peer parsing"]
+  end
+
+  ContentView --> NodeBootstrap
+  NodeBootstrap --> NodeStorage
+  NodeBootstrap --> LDKNode["LDKNode"]
+
+  style SwiftUILayer fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
+  style Domain fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
+  style ContentView fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style NetworkSyncFooter fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style BootLoadingOverlay fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style NodeBootstrap fill:#86efac,stroke:#15803d,stroke-width:2px,color:#14532d
+  style NodeStorage fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style Parsers fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style LDKNode fill:#4ade80,stroke:#166534,stroke-width:2px,color:#14532d

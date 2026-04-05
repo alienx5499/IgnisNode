@@ -1,0 +1,24 @@
+---
+config:
+  theme: base
+  themeVariables:
+    darkMode: false
+    background: "#ffffff"
+    lineColor: "#111827"
+    signalColor: "#111827"
+    signalTextColor: "#374151"
+    primaryTextColor: "#111827"
+    secondaryTextColor: "#374151"
+    tertiaryColor: "#6b7280"
+    arrowheadColor: "#111827"
+    edgeLabelBackground: "#f3f4f6"
+---
+stateDiagram-v2
+  [*] --> idle
+  idle --> preparingStorage : start()
+  preparingStorage --> configuring
+  configuring --> starting
+  starting --> running : success
+  starting --> failed : error
+  running --> idle : stop()
+  failed --> idle : stop

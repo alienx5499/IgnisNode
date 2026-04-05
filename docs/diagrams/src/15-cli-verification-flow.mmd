@@ -1,0 +1,27 @@
+---
+config:
+  theme: base
+  themeVariables:
+    darkMode: false
+    background: "#ffffff"
+    lineColor: "#111827"
+    signalColor: "#111827"
+    signalTextColor: "#374151"
+    primaryTextColor: "#111827"
+    secondaryTextColor: "#374151"
+    tertiaryColor: "#6b7280"
+    arrowheadColor: "#111827"
+    edgeLabelBackground: "#f3f4f6"
+---
+flowchart TD
+  M["Simulator destination"] --> B["xcodebuild build"]
+  M --> T["xcodebuild test"]
+
+  T --> U["Unit and integration"]
+  T --> V["UI automation"]
+
+  style M fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af
+  style B fill:#ffffff,stroke:#f59e0b,stroke-width:2px,color:#b45309
+  style T fill:#fef3c7,stroke:#f59e0b,stroke-width:2px,color:#b45309
+  style U fill:#ffffff,stroke:#2563eb,stroke-width:2px,color:#1d4ed8
+  style V fill:#fce7f3,stroke:#ec4899,stroke-width:2px,color:#be185d

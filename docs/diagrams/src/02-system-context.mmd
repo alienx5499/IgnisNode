@@ -1,0 +1,46 @@
+---
+config:
+  theme: base
+  themeVariables:
+    darkMode: false
+    background: "#ffffff"
+    lineColor: "#111827"
+    signalColor: "#111827"
+    signalTextColor: "#374151"
+    primaryTextColor: "#111827"
+    secondaryTextColor: "#374151"
+    tertiaryColor: "#6b7280"
+    arrowheadColor: "#111827"
+    edgeLabelBackground: "#f3f4f6"
+---
+flowchart TB
+  subgraph App["Application"]
+    A[IgnisNodeApp] --> CV[ContentView]
+    CV --> NB[NodeBootstrap]
+    CV --> V[Views and sheets]
+    V --> LP[LogConsoleView]
+    V --> NS[NodeSnapshotPanel]
+    V --> PM[Peer flows]
+    NB --> LDK["LDK Node · Signet"]
+  end
+
+  subgraph External["Network"]
+    E[Esplora API]
+    R[RGS]
+  end
+
+  LDK --> E
+  LDK --> R
+
+  style App fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af
+  style External fill:#e9d5ff,stroke:#9333ea,stroke-width:2px,color:#6b21b8
+  style A fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style CV fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style NB fill:#86efac,stroke:#15803d,stroke-width:2px,color:#14532d
+  style V fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style LP fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style NS fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style PM fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style LDK fill:#4ade80,stroke:#166534,stroke-width:2px,color:#14532d
+  style E fill:#ddd6fe,stroke:#7c3aed,stroke-width:2px,color:#5b21b6
+  style R fill:#ddd6fe,stroke:#7c3aed,stroke-width:2px,color:#5b21b6

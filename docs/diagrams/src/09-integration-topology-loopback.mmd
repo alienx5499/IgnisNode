@@ -1,0 +1,22 @@
+---
+config:
+  theme: base
+  themeVariables:
+    darkMode: false
+    background: "#ffffff"
+    lineColor: "#111827"
+    signalColor: "#111827"
+    signalTextColor: "#374151"
+    primaryTextColor: "#111827"
+    secondaryTextColor: "#374151"
+    tertiaryColor: "#6b7280"
+    arrowheadColor: "#111827"
+    edgeLabelBackground: "#f3f4f6"
+---
+flowchart LR
+  A["Node A · loopback"]
+  B["Node B · loopback"]
+  B -->|"connect"| A
+
+  style A fill:#4ade80,stroke:#166534,stroke-width:2px,color:#14532d
+  style B fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1

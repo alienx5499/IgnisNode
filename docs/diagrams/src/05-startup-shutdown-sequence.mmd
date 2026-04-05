@@ -1,0 +1,31 @@
+---
+config:
+  theme: base
+  themeVariables:
+    darkMode: false
+    background: "#ffffff"
+    lineColor: "#111827"
+    signalColor: "#111827"
+    signalTextColor: "#374151"
+    primaryTextColor: "#111827"
+    secondaryTextColor: "#374151"
+    tertiaryColor: "#6b7280"
+    arrowheadColor: "#111827"
+    edgeLabelBackground: "#f3f4f6"
+---
+sequenceDiagram
+  participant U as SwiftUI
+  participant B as NodeBootstrap
+  participant L as LDK Node
+  participant E as Esplora
+  participant R as RGS
+
+  U->>B: start on appear
+  B->>B: resolve storage URL
+  B->>L: build and start
+  L->>E: sync chain and fees
+  L->>R: fetch gossip snapshot
+  B->>B: snapshot and log polling
+  U->>B: user actions
+  Note over U,B: background / stop
+  B->>L: stop

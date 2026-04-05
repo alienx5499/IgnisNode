@@ -1,0 +1,42 @@
+---
+config:
+  theme: base
+  themeVariables:
+    darkMode: false
+    background: "#ffffff"
+    lineColor: "#111827"
+    signalColor: "#111827"
+    signalTextColor: "#374151"
+    primaryTextColor: "#111827"
+    secondaryTextColor: "#374151"
+    tertiaryColor: "#6b7280"
+    arrowheadColor: "#111827"
+    edgeLabelBackground: "#f3f4f6"
+---
+flowchart LR
+  subgraph Home["Main scroll"]
+    H1["Header · logs"]
+    H2["Status"]
+    H3["Node ID"]
+    H4["Receive"]
+    H5["Snapshot panel"]
+    H6["Network footer"]
+  end
+  subgraph Overlays["Sheets"]
+    O1["Boot overlay"]
+    O2["Log console"]
+    O3["Peer modals"]
+  end
+  Home --> Overlays
+
+  style Home fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af
+  style Overlays fill:#fef3c7,stroke:#f59e0b,stroke-width:2px,color:#b45309
+  style H1 fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style H2 fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style H3 fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style H4 fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style H5 fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style H6 fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style O1 fill:#ffffff,stroke:#f97316,stroke-width:2px,color:#c2410c
+  style O2 fill:#ffffff,stroke:#f97316,stroke-width:2px,color:#c2410c
+  style O3 fill:#ffffff,stroke:#f97316,stroke-width:2px,color:#c2410c

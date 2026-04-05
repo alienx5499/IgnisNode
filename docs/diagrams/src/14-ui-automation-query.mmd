@@ -1,0 +1,25 @@
+---
+config:
+  theme: base
+  themeVariables:
+    darkMode: false
+    background: "#ffffff"
+    lineColor: "#111827"
+    signalColor: "#111827"
+    signalTextColor: "#374151"
+    primaryTextColor: "#111827"
+    secondaryTextColor: "#374151"
+    tertiaryColor: "#6b7280"
+    arrowheadColor: "#111827"
+    edgeLabelBackground: "#f3f4f6"
+---
+flowchart TD
+  XC["Query root"]
+  XC --> D["Descendant match"]
+  D --> ID["Identifier ignis.*"]
+  ID --> ELEM["Wait and assert"]
+
+  style XC fill:#fde68a,stroke:#d97706,stroke-width:2px,color:#92400e
+  style D fill:#ffffff,stroke:#8b5cf6,stroke-width:2px,color:#5b21b6
+  style ID fill:#ffffff,stroke:#8b5cf6,stroke-width:2px,color:#5b21b6
+  style ELEM fill:#4ade80,stroke:#166534,stroke-width:2px,color:#14532d

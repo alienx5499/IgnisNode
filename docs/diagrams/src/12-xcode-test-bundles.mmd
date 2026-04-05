@@ -1,0 +1,26 @@
+---
+config:
+  theme: base
+  themeVariables:
+    darkMode: false
+    background: "#ffffff"
+    lineColor: "#111827"
+    signalColor: "#111827"
+    signalTextColor: "#374151"
+    primaryTextColor: "#111827"
+    secondaryTextColor: "#374151"
+    tertiaryColor: "#6b7280"
+    arrowheadColor: "#111827"
+    edgeLabelBackground: "#f3f4f6"
+---
+flowchart TB
+  APP["IgnisNode.app"]
+  TUNIT["IgnisNodeTests"]
+  TUI["IgnisNodeUITests"]
+
+  TUNIT -.->|test host| APP
+  TUI -.->|UI host| APP
+
+  style APP fill:#4ade80,stroke:#166534,stroke-width:2px,color:#14532d
+  style TUNIT fill:#ffffff,stroke:#2563eb,stroke-width:2px,color:#1d4ed8
+  style TUI fill:#fce7f3,stroke:#ec4899,stroke-width:2px,color:#be185d

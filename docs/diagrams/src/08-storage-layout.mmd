@@ -1,0 +1,28 @@
+---
+config:
+  theme: base
+  themeVariables:
+    darkMode: false
+    background: "#ffffff"
+    lineColor: "#111827"
+    signalColor: "#111827"
+    signalTextColor: "#374151"
+    primaryTextColor: "#111827"
+    secondaryTextColor: "#374151"
+    tertiaryColor: "#6b7280"
+    arrowheadColor: "#111827"
+    edgeLabelBackground: "#f3f4f6"
+---
+flowchart TD
+  AS["Application Support"] --> IGNIS["IgnisNode"]
+  IGNIS --> SIG["signet"]
+  SIG --> LDKFILES["Wallet and node state"]
+  SIG --> LOG["ldk_node.log"]
+  SIG --> CACHE["Receive address cache"]
+
+  style AS fill:#e0e7ff,stroke:#4f46e5,stroke-width:2px,color:#312e81
+  style IGNIS fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style SIG fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style LDKFILES fill:#4ade80,stroke:#166534,stroke-width:2px,color:#14532d
+  style LOG fill:#fde68a,stroke:#ca8a04,stroke-width:2px,color:#a16207
+  style CACHE fill:#fbcfe8,stroke:#db2777,stroke-width:2px,color:#9d174d

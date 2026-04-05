@@ -1,0 +1,45 @@
+---
+config:
+  theme: base
+  themeVariables:
+    darkMode: false
+    background: "#ffffff"
+    lineColor: "#111827"
+    signalColor: "#111827"
+    signalTextColor: "#374151"
+    primaryTextColor: "#111827"
+    secondaryTextColor: "#374151"
+    tertiaryColor: "#6b7280"
+    arrowheadColor: "#111827"
+    edgeLabelBackground: "#f3f4f6"
+---
+flowchart TB
+  subgraph Unit["Unit target"]
+    U1["NodeStorage layout"]
+  end
+  subgraph Integ["Integration target"]
+    I1["Ephemeral listen ports"]
+    I2["Esplora rotation & retries"]
+    I3["Loopback peer handshake"]
+  end
+  subgraph UIT["UI target"]
+    X1["Home · logs · snapshot"]
+    X2["Launch attachment"]
+    X3["Stable accessibility IDs"]
+  end
+
+  Unit --> Run["xcodebuild test"]
+  Integ --> Run
+  UIT --> Run
+
+  style Unit fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
+  style Integ fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
+  style UIT fill:#fce7f3,stroke:#ec4899,stroke-width:2px,color:#9d174d
+  style Run fill:#fef3c7,stroke:#f59e0b,stroke-width:2px,color:#b45309
+  style U1 fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style I1 fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style I2 fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style I3 fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style X1 fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style X2 fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+  style X3 fill:#ffffff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
