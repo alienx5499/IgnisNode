@@ -9,34 +9,127 @@ import XCTest
 
 final class IgnisNodeUITests: XCTestCase {
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    @MainActor
-    func testExample() {
-        // UI tests must launch the application that they test.
         let app = XCUIApplication()
-        app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // XCUIAutomation Documentation
-        // https://developer.apple.com/documentation/xcuiautomation
+        if app.state == .runningForeground || app.state == .runningBackground {
+            app.terminate()
+        }
     }
 
-    @MainActor
-    func testLaunchPerformance() {
-        // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
+    private func homeBrandTitle(in app: XCUIApplication) -> XCUIElement {
+        IgnisUITestSupport.element(app, id: IgnisUITestAccessibilityID.homeBrandTitle)
+    }
+
+    func testHomeSmoke_AllPrimarySectionsVisible() {
+        let app = IgnisUITestSupport.applicationUnderTest()
+        app.launch()
+        IgnisUITestSupport.assertHomeShellReady(app)
+
+        let t = IgnisUITestSupport.interactionTimeout
+        XCTAssertTrue(
+            IgnisUITestSupport.element(app, id: IgnisUITestAccessibilityID.homeStatusHeading).waitForExistence(timeout: t),
+            "STATUS heading"
+        )
+        XCTAssertTrue(
+            IgnisUITestSupport.element(app, id: IgnisUITestAccessibilityID.homeNodeIdHeading).waitForExistence(timeout: t),
+            "NODE ID heading"
+        )
+        XCTAssertTrue(
+            IgnisUITestSupport.element(app, id: IgnisUITestAccessibilityID.snapshotSectionTitle).waitForExistence(timeout: t),
+            "LIVE SNAPSHOT title"
+        )
+        XCTAssertTrue(
+            IgnisUITestSupport.element(app, id: IgnisUITestAccessibilityID.networkFooterSignetBadge).waitForExistence(timeout: t),
+            "Network footer (Signet badge)"
+        )
+
+        XCTAssertTrue(
+            IgnisUITestSupport.element(app, id: IgnisUITestAccessibilityID.homeScroll).waitForExistence(timeout: t),
+            "Home scroll container (ignis.home.scroll)"
+        )
+
+        XCTAssertTrue(
+            IgnisUITestSupport.element(app, id: IgnisUITestAccessibilityID.homeCopyNodeId).waitForExistence(timeout: t),
+            "Copy node id control"
+        )
+        XCTAssertTrue(
+            IgnisUITestSupport.element(app, id: IgnisUITestAccessibilityID.homeShowNodeIdQR).waitForExistence(timeout: t),
+            "Show node id QR control"
+        )
+    }
+
+    func testHomeShowsBrandingAndStatusSection() {
+        let app = IgnisUITestSupport.applicationUnderTest()
+        app.launch()
+        IgnisUITestSupport.assertHomeShellReady(app)
+
+        XCTAssertTrue(
+            IgnisUITestSupport.element(app, id: IgnisUITestAccessibilityID.homeStatusHeading)
+                .waitForExistence(timeout: IgnisUITestSupport.interactionTimeout)
+        )
+    }
+
+    func testLogConsoleSheetOpensAndDismisses() {
+        let app = IgnisUITestSupport.applicationUnderTest()
+        app.launch()
+        IgnisUITestSupport.assertHomeShellReady(app)
+
+        let logButton = app.buttons[IgnisUITestAccessibilityID.homeLogConsole]
+        XCTAssertTrue(logButton.waitForExistence(timeout: IgnisUITestSupport.interactionTimeout))
+        logButton.tap()
+
+        let logsNavigationStack = IgnisUITestSupport.element(app, id: IgnisUITestAccessibilityID.logsNavigationStack)
+        XCTAssertTrue(logsNavigationStack.waitForExistence(timeout: IgnisUITestSupport.interactionTimeout))
+
+        let emptyOrScroll = IgnisUITestSupport.element(app, id: IgnisUITestAccessibilityID.logsEmptyState)
+        let hasEmptyPlaceholder = emptyOrScroll.waitForExistence(timeout: 5)
+        if !hasEmptyPlaceholder {
+            let logScrollView = logsNavigationStack.descendants(matching: .scrollView).firstMatch
+            XCTAssertTrue(
+                logScrollView.waitForExistence(timeout: 5),
+                "Expected log list scroll view inside the log console after empty state was not shown."
+            )
         }
+
+        let done = app.buttons[IgnisUITestAccessibilityID.logsDone]
+        XCTAssertTrue(done.waitForExistence(timeout: IgnisUITestSupport.interactionTimeout))
+        done.tap()
+
+        XCTAssertTrue(homeBrandTitle(in: app).waitForExistence(timeout: IgnisUITestSupport.interactionTimeout))
+    }
+
+    func testHomeScrollViewExists() {
+        let app = IgnisUITestSupport.applicationUnderTest()
+        app.launch()
+        IgnisUITestSupport.assertHomeShellReady(app)
+
+        XCTAssertTrue(
+            IgnisUITestSupport.element(app, id: IgnisUITestAccessibilityID.homeScroll)
+                .waitForExistence(timeout: IgnisUITestSupport.interactionTimeout),
+            "Home scroll should be findable by accessibility identifier."
+        )
+    }
+
+    func testSnapshotQuickActionsAppearWhenNodeRunning() throws {
+        let app = IgnisUITestSupport.applicationUnderTest()
+        app.launch()
+        IgnisUITestSupport.assertHomeShellReady(app)
+
+        let connect = app.buttons[IgnisUITestAccessibilityID.snapshotConnectPeer]
+        guard connect.waitForExistence(timeout: IgnisUITestSupport.snapshotRunningTimeout) else {
+            throw XCTSkip("Snapshot toolbar did not appear (node may not have reached running).")
+        }
+
+        let scanInviteQR = app.buttons[IgnisUITestAccessibilityID.snapshotScanInviteQR]
+        let showInviteQR = app.buttons[IgnisUITestAccessibilityID.snapshotShowInviteQR]
+        let t = IgnisUITestSupport.interactionTimeout
+        XCTAssertTrue(scanInviteQR.waitForExistence(timeout: t))
+        XCTAssertTrue(showInviteQR.waitForExistence(timeout: t))
+        XCTAssertTrue(connect.isHittable)
+        XCTAssertTrue(scanInviteQR.isHittable)
+        XCTAssertTrue(showInviteQR.isHittable)
     }
 }

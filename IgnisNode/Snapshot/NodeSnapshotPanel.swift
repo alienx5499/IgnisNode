@@ -29,6 +29,7 @@ struct NodeSnapshotPanel: View {
                         .font(.system(size: 9, weight: .semibold))
                         .tracking(2)
                         .foregroundStyle(theme.sectionLabel)
+                        .accessibilityIdentifier("ignis.snapshot.sectionTitle")
                     Spacer(minLength: 8)
                     if live {
                         HStack(spacing: 5) {
@@ -59,6 +60,7 @@ struct NodeSnapshotPanel: View {
                             }
                             .buttonStyle(.glass)
                             .accessibilityLabel(String(localized: "Scan peer invite QR to connect"))
+                            .accessibilityIdentifier("ignis.snapshot.scanInviteQR")
 
                             Button {
                                 showPeerInviteQR = true
@@ -69,6 +71,7 @@ struct NodeSnapshotPanel: View {
                             }
                             .buttonStyle(.glass)
                             .accessibilityLabel(String(localized: "Show invite QR for others to scan"))
+                            .accessibilityIdentifier("ignis.snapshot.showInviteQR")
 
                             Button {
                                 showConnectPeer = true
@@ -79,6 +82,7 @@ struct NodeSnapshotPanel: View {
                             }
                             .buttonStyle(.glass)
                             .accessibilityLabel(String(localized: "Connect to a peer manually"))
+                            .accessibilityIdentifier("ignis.snapshot.connectPeer")
                         }
                     }
                 }

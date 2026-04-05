@@ -119,8 +119,9 @@ final class NodeBootstrap {
     private var logPollingTask: Task<Void, Never>?
     private var lastLogOffset: UInt64 = 0
 
-    /// True while booting, then until first on-chain or Lightning sync timestamp (or boot overlay timeout).
+    /// True while booting, then until first on-chain or Lightning sync (or overlay timeout). Always false when `IgnisUITestingLaunchArgument.value` is set (UI automation).
     var showBitcoinBootOverlay: Bool {
+        if ProcessInfo.processInfo.arguments.contains(IgnisUITestingLaunchArgument.value) { return false }
         guard lastError == nil else { return false }
         if phase != .running { return true }
         let s = snapshot

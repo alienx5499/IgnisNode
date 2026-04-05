@@ -25,6 +25,7 @@ struct LogConsoleView: View {
                         .multilineTextAlignment(.center)
                         .padding(24)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .accessibilityIdentifier("ignis.logs.emptyState")
                 } else {
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 6) {
@@ -49,8 +50,10 @@ struct LogConsoleView: View {
                         dismiss()
                     }
                     .foregroundStyle(theme.statusText)
+                    .accessibilityIdentifier("ignis.logs.done")
                 }
             }
+            .accessibilityIdentifier("ignis.logs.navigationStack")
         }
     }
 }
