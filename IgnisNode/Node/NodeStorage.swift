@@ -1,14 +1,16 @@
 //
-//  IgnisNodeStorage.swift
+//  NodeStorage.swift
 //  IgnisNode
 //
 //  Created by PRABAL PATRA on 04/04/26.
+//
+//  Resolves `Application Support/IgnisNode/<network>/` and ensures the directory exists before LDK uses it.
 //
 
 import Foundation
 import LDKNode
 
-enum IgnisNodeStorage {
+enum NodeStorage {
     static let folderName = "IgnisNode"
 
     static func dataDirectoryURL(network: Network) throws -> URL {

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		49FE199D2F8082D500E19288 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = 49FE199C2F8082D500E19288 /* LDKNode */; };
+		49FE1A122F809E1F00E19288 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 49FE1A112F809E1F00E19288 /* Lottie */; };
+		49FE1B012F809E2000E19288 /* LDKNode in Frameworks */ = {isa = PBXBuildFile; productRef = 49FE199C2F8082D500E19288 /* LDKNode */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +59,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				49FE199D2F8082D500E19288 /* LDKNode in Frameworks */,
+				49FE1A122F809E1F00E19288 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49FE1B012F809E2000E19288 /* LDKNode in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +122,7 @@
 			name = IgnisNode;
 			packageProductDependencies = (
 				49FE199C2F8082D500E19288 /* LDKNode */,
+				49FE1A112F809E1F00E19288 /* Lottie */,
 			);
 			productName = IgnisNode;
 			productReference = 49FE191A2F807AAD00E19288 /* IgnisNode.app */;
@@ -141,6 +146,7 @@
 			);
 			name = IgnisNodeTests;
 			packageProductDependencies = (
+				49FE199C2F8082D500E19288 /* LDKNode */,
 			);
 			productName = IgnisNodeTests;
 			productReference = 49FE19272F807AAF00E19288 /* IgnisNodeTests.xctest */;
@@ -203,6 +209,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				49FE199B2F8082D500E19288 /* XCRemoteSwiftPackageReference "ldk-node" */,
+				49FE1A102F809E1F00E19288 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 49FE191B2F807AAD00E19288 /* Products */;
@@ -409,6 +416,8 @@
 				DEVELOPMENT_TEAM = 7T8W9DL4H8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan QR codes that contain Lightning peer connection details.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "IgnisNode connects to Lightning peers on your Wi-Fi network.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -441,6 +450,8 @@
 				DEVELOPMENT_TEAM = 7T8W9DL4H8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Scan QR codes that contain Lightning peer connection details.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "IgnisNode connects to Lightning peers on your Wi-Fi network.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -597,6 +608,14 @@
 				version = 0.7.0;
 			};
 		};
+		49FE1A102F809E1F00E19288 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -604,6 +623,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 49FE199B2F8082D500E19288 /* XCRemoteSwiftPackageReference "ldk-node" */;
 			productName = LDKNode;
+		};
+		49FE1A112F809E1F00E19288 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 49FE1A102F809E1F00E19288 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
