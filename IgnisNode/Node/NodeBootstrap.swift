@@ -23,6 +23,8 @@ private enum NodeDefaults {
     /// No trailing `/`. LDK appends `/{timestamp}`; a trailing slash would yield `//…`.
     static let rgsURL = "https://rgs.mutinynet.com/snapshot"
     static let snapshotPollInterval: Duration = .seconds(2.5)
+    /// While the boot overlay waits for the first wallet sync, nudge `syncWallets()` on this interval (same as pull-to-refresh).
+    static let bootWalletSyncInterval: Duration = .seconds(5)
     /// Cached so the home receive address survives restarts until `newAddress()` moves the HD chain.
     static let receiveAddressCacheFilename = "ui_receive_address.txt"
 }
@@ -94,6 +96,7 @@ enum IgnisNodePhase: Equatable {
 final class NodeBootstrap {
     private var node: Node?
     private var snapshotRefreshTask: Task<Void, Never>?
+    private var bootWalletSyncTask: Task<Void, Never>?
 
     private(set) var nodeId: String = ""
     private(set) var phase: IgnisNodePhase = .idle
@@ -136,6 +139,7 @@ final class NodeBootstrap {
         }
         snapshotRefreshTask?.cancel()
         snapshotRefreshTask = nil
+        cancelBootWalletSync()
         cancelBootOverlayTimeout()
         lastError = nil
         phase = .preparingStorage
@@ -185,6 +189,7 @@ final class NodeBootstrap {
             refreshSnapshot()
             if snapshot.lastOnchainSync == nil, snapshot.lastLightningSync == nil {
                 scheduleBootOverlayTimeoutIfNeeded()
+                startBootWalletSyncWhileAwaitingFirstSync()
             }
             loadReceiveAddressForUI(dataURL: dataURL)
             startSnapshotPolling()
@@ -205,6 +210,7 @@ final class NodeBootstrap {
         logPollingTask?.cancel()
         logPollingTask = nil
         cancelBootOverlayTimeout()
+        cancelBootWalletSync()
         try? node?.stop()
         node = nil
         nodeId = ""
@@ -390,6 +396,28 @@ final class NodeBootstrap {
         if snapshot.lastOnchainSync != nil || snapshot.lastLightningSync != nil {
             bootOverlayTimeoutTask?.cancel()
             bootOverlayTimeoutTask = nil
+            cancelBootWalletSync()
+        }
+    }
+
+    private func cancelBootWalletSync() {
+        bootWalletSyncTask?.cancel()
+        bootWalletSyncTask = nil
+    }
+
+    /// Calls `syncWallets()` periodically until the first on-chain or Lightning sync timestamp appears (or boot overlay times out), matching pull-to-refresh behavior.
+    private func startBootWalletSyncWhileAwaitingFirstSync() {
+        cancelBootWalletSync()
+        bootWalletSyncTask = Task { @MainActor in
+            while !Task.isCancelled {
+                guard phase == .running, let node = self.node else { return }
+                guard self.snapshot.lastOnchainSync == nil, self.snapshot.lastLightningSync == nil else { return }
+                if self.bootOverlayTimeoutPassed { return }
+                try? node.syncWallets()
+                self.refreshSnapshot()
+                if self.snapshot.lastOnchainSync != nil || self.snapshot.lastLightningSync != nil { return }
+                try? await Task.sleep(for: NodeDefaults.bootWalletSyncInterval)
+            }
         }
     }
 
